@@ -5,6 +5,13 @@ import org.junit.Test;
 import static io.restassured.RestAssured.*;
 
 public class VideoGameTests extends VideoGameConfig {
+    String gameBodyJSON = "{\n" +
+            "  \"category\": \"Platform\",\n" +
+            "  \"name\": \"Mario\",\n" +
+            "  \"rating\": \"Mature\",\n" +
+            "  \"releaseDate\": \"2012-05-04\",\n" +
+            "  \"reviewScore\": 85\n" +
+            "}";
 
     @Test
     public void getAllGames() {
@@ -16,14 +23,6 @@ public class VideoGameTests extends VideoGameConfig {
 
     @Test
     public void createNewGameByJSON(){
-        String gameBodyJSON = "{\n" +
-                "  \"category\": \"Platform\",\n" +
-                "  \"name\": \"Mario\",\n" +
-                "  \"rating\": \"Mature\",\n" +
-                "  \"releaseDate\": \"2012-05-04\",\n" +
-                "  \"reviewScore\": 85\n" +
-                "}";
-
         given()
                 .body(gameBodyJSON)
                 .when()
@@ -48,6 +47,16 @@ public class VideoGameTests extends VideoGameConfig {
                 .accept("application/xml")
                 .when()
                 .post(VideoGameEndpoints.ALL_VIDEO_GAMES)
+                .then();
+    }
+
+    @Test
+    public void updateGame(){
+
+        given()
+                .body(gameBodyJSON)
+                .when()
+                .put("videogame/3")
                 .then();
     }
 }
