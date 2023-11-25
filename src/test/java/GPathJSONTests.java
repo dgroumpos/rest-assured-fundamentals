@@ -2,6 +2,7 @@ import config.FootballConfig;
 import io.restassured.response.Response;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.List;
 
@@ -46,5 +47,29 @@ public class GPathJSONTests extends FootballConfig {
         Response response = get("teams/57");
         int sumOfIds = response.path("squad.collect {it.id}.sum()");
         System.out.println("Sum of Ids = " + sumOfIds);
+    }
+
+    @Test
+    public void extractMapWithFindAndFindAllWithParameters(){
+        String position = "Offence";
+        String nationality = "England";
+
+        Response response = get("teams/57");
+
+        Map<String, ?> playerOfCertainPosition = response.path(
+                "squad.findAll {it.position == '%s'}.find {it.nationality == '%s'}", position, nationality);
+        System.out.println("Details of player: " + playerOfCertainPosition);
+    }
+
+    @Test
+    public void extractMultiplePlayers(){
+        String position = "Offence";
+        String nationality = "England";
+
+        Response response = get("teams/57");
+
+        ArrayList<Map<String, ?>> allPlayersOfCertainPosition = response.path(
+                "squad.findAll {it.position == '%s'}.findAll {it.nationality == '%s'}", position, nationality);
+        System.out.println("Details of players: " + allPlayersOfCertainPosition);
     }
 }
