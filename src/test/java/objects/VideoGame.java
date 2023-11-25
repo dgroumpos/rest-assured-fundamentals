@@ -11,6 +11,7 @@ public class VideoGame {
     private String releaseDate;
     private Integer reviewScore;
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
+    private Integer id;
 
     /**
      * No args constructor for use in serialization
@@ -83,5 +84,8 @@ public class VideoGame {
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
-
+    public Integer getId() {
+        return id;
+    }
+    public void setId(Integer id){this.id = id;}
 }
