@@ -7,6 +7,7 @@ import objects.VideoGame;
 import org.junit.Test;
 
 import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.lessThan;
 
 public class VideoGameTests extends VideoGameConfig {
     String gameBodyJSON = "{\n" +
@@ -125,5 +126,17 @@ public class VideoGameTests extends VideoGameConfig {
                 .get(VideoGameEndpoints.SINGLE_VIDEO_GAME)
                 .then()
                 .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("VideoGameJSONSchema.json"));
+    }
+
+    @Test
+    public void captureResponseTime(){
+        long responseTime = get(VideoGameEndpoints.ALL_VIDEO_GAMES).time();
+        System.out.println(responseTime);
+    }
+
+    @Test
+    public void assertOnResponseTime(){
+        get(VideoGameEndpoints.ALL_VIDEO_GAMES)
+                .then().time(lessThan(2000L));
     }
 }
